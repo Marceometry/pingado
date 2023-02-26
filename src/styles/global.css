@@ -1,0 +1,14 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  font: 400 1rem sans-serif;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+}
