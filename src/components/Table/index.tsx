@@ -1,5 +1,5 @@
 import { useGameContext } from '../../contexts'
-import { CARD_WIDTH } from '../Card'
+import { Chip } from '../../components'
 import { CardSequence } from './components'
 
 export const Table = () => {
@@ -40,11 +40,12 @@ export const Table = () => {
         <CardSequence suit='clubs' />
         <CardSequence suit='diamonds' />
 
-        <strong
+        {/* <strong
           style={{ width: CARD_WIDTH, fontSize: 32, textAlign: 'center' }}
         >
           {accumulated}
-        </strong>
+        </strong> */}
+        <Chip accumulated={accumulated} />
 
         <CardSequence suit='spades' />
         <CardSequence suit='hearts' />

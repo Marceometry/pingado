@@ -1,4 +1,4 @@
-import { Match, MatchTable, Players } from './types'
+import { Match, MatchTable, PlayerChipColor, Players } from './types'
 
 export const AUTOPLAY_DELAY_MS = 1000
 
@@ -19,6 +19,8 @@ export const CARDS_PER_PLAYER = TOTAL_CARDS / NUMBER_OF_PLAYERS
 
 export const MIDDLE_CARD = Math.ceil(CARDS_PER_PLAYER / 2)
 
+export const CHIP_COLORS: PlayerChipColor[] = ['black', 'red', 'yellow', 'blue']
+
 export const playerList = new Array(NUMBER_OF_PLAYERS)
   .fill('')
   .map((_, index) => (!index ? 'user' : String(index + 1)))
@@ -28,10 +30,11 @@ export const defaultPlayerStats = {
   matchesWon: 0,
 }
 
-export const playersObj = playerList.reduce((acc, item) => {
+export const playersObj = playerList.reduce((acc, item, index) => {
   acc[item] = {
     ...defaultPlayerStats,
     name: item === 'user' ? 'Você' : `Jogador ${item}`,
+    chipColor: CHIP_COLORS[index],
   }
   return acc
 }, {} as Players)

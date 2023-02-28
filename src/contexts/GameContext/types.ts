@@ -1,3 +1,5 @@
+export type PlayerChipColor = 'black' | 'red' | 'yellow' | 'blue'
+
 export type CardSuit = 'clubs' | 'diamonds' | 'hearts' | 'spades'
 
 export type CardModel = {
@@ -10,6 +12,7 @@ export type Player = {
   accumulated: number
   matchesWon: number
   name: string
+  chipColor?: PlayerChipColor
 }
 
 export type Players = {

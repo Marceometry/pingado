@@ -4,7 +4,7 @@ import {
   getPlaceableCards,
   organizeCards,
 } from '../../contexts'
-import { Card, CARD_WIDTH } from '../../components'
+import { Card, CARD_WIDTH, Chip } from '../../components'
 
 export type PlayerDeckProps = {
   playerId: string
@@ -95,13 +95,13 @@ export const PlayerDeck = ({
         ))}
       </div>
 
-      <button
-        disabled={!!winner || !isUser || !!placeableCards.length}
+      <Chip
+        as={isUser && !winner ? 'button' : 'span'}
+        accumulated={accumulated}
         onClick={() => dropAndSkipTurn(playerId)}
-        style={{ padding: '12px', fontSize: 18, borderRadius: 999 }}
-      >
-        {accumulated}
-      </button>
+        disabled={!!winner || !isUser || !!placeableCards.length}
+        color={players[playerId].chipColor}
+      />
     </div>
   )
 }
