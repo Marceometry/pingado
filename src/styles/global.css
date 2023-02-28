@@ -5,14 +5,24 @@
 }
 
 body {
-  display: grid;
-  place-items: center;
   min-height: 100vh;
   font: 400 1rem sans-serif;
-  color: rgba(255, 255, 255, 0.87);
+  color: #ffffff;
   background-color: #242424;
 }
 
-h1 {
-  margin-bottom: 1rem;
+button {
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+button:disabled {
+  opacity: 0.8;
+  cursor: not-allowed;
+  color: #000;
+  background-color: #cccccc;
 }

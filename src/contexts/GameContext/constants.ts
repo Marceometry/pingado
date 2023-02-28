@@ -1,39 +1,40 @@
-import { Card, CardSuit, Match, MatchTable } from './types'
+import { Match, MatchTable, Players } from './types'
 
-const makeCard = (suit: CardSuit, value: number): Card => ({
-  label: value === 1 ? 'A' : String(value),
-  value,
-  suit,
-})
+export const AUTOPLAY_DELAY_MS = 1000
 
-const cardSuits: CardSuit[] = ['clubs', 'diamonds', 'hearts', 'spades']
+export const NUMBER_OF_PLAYERS = 4
 
-export const CARDS_PER_PLAYER = 10
+const TOTAL_CARDS_BY_NUMBER_OF_PLAYERS = {
+  3: 36,
+  4: 40,
+  5: 40,
+  6: 48,
+}
+
+export const TOTAL_CARDS = TOTAL_CARDS_BY_NUMBER_OF_PLAYERS[NUMBER_OF_PLAYERS]
+
+export const CARDS_PER_SUIT = TOTAL_CARDS / 4
+
+export const CARDS_PER_PLAYER = TOTAL_CARDS / NUMBER_OF_PLAYERS
 
 export const MIDDLE_CARD = Math.ceil(CARDS_PER_PLAYER / 2)
 
-export function generateCards(cardsPerPlayer = CARDS_PER_PLAYER): Card[] {
-  return cardSuits.reduce((acc, item) => {
-    for (let i = 1; i <= cardsPerPlayer; i++) {
-      acc.push(makeCard(item, i))
-    }
-    return acc
-  }, [] as Card[])
-}
-
-export const playerList = ['user', '2', '3', '4']
+export const playerList = new Array(NUMBER_OF_PLAYERS)
+  .fill('')
+  .map((_, index) => (!index ? 'user' : String(index + 1)))
 
 export const defaultPlayerStats = {
   accumulated: 30,
   matchesWon: 0,
 }
 
-export const playersObj = {
-  [playerList[0]]: defaultPlayerStats,
-  [playerList[1]]: defaultPlayerStats,
-  [playerList[2]]: defaultPlayerStats,
-  [playerList[3]]: defaultPlayerStats,
-}
+export const playersObj = playerList.reduce((acc, item) => {
+  acc[item] = {
+    ...defaultPlayerStats,
+    name: item === 'user' ? 'Você' : `Jogador ${item}`,
+  }
+  return acc
+}, {} as Players)
 
 export const defaultTableState: MatchTable = {
   accumulated: 0,

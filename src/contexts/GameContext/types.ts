@@ -1,6 +1,6 @@
 export type CardSuit = 'clubs' | 'diamonds' | 'hearts' | 'spades'
 
-export type Card = {
+export type CardModel = {
   suit: CardSuit
   value: number
   label: string
@@ -9,6 +9,7 @@ export type Card = {
 export type Player = {
   accumulated: number
   matchesWon: number
+  name: string
 }
 
 export type Players = {
@@ -16,7 +17,7 @@ export type Players = {
 }
 
 export type MatchPlayer = {
-  cards: Card[]
+  cards: CardModel[]
 }
 
 export type MatchTableCards = {

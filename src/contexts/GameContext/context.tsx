@@ -11,8 +11,9 @@ import {
   defaultMatchState,
   playerList,
   playersObj,
+  AUTOPLAY_DELAY_MS,
 } from './constants'
-import { Card, Match, MatchPlayer, Players } from './types'
+import { CardModel, Match, MatchPlayer, Players } from './types'
 import { getPlaceableCards, dealCards, getNextPlayer } from './utils'
 
 export type GameContextData = {
@@ -20,7 +21,7 @@ export type GameContextData = {
   players: Players
   playersOrder: string[]
   restartMatch: () => void
-  placeCard: (card: Card, playerId: string) => void
+  placeCard: (card: CardModel, playerId: string) => void
   dropAndSkipTurn: (playerId: string) => void
 }
 
@@ -31,18 +32,10 @@ export type GameContextProviderProps = {
 export const GameContext = createContext({} as GameContextData)
 
 export function GameContextProvider({ children }: GameContextProviderProps) {
-  const [playersOrder, setPlayersOrder] = useState<string[]>(playerList)
+  const playersOrder = playerList // const [playersOrder, setPlayersOrder] = useState<string[]>(playerList)
   const [players, setPlayers] = useState<Players>(playersObj)
   const [matchHistory, setMatchHistory] = useState<Match[]>([])
   const [match, setMatch] = useState<Match>(defaultMatchState)
-
-  // useEffect(() => {
-  //   console.log(players)
-  // }, [players])
-
-  // useEffect(() => {
-  //   console.log(match)
-  // }, [match])
 
   const startMatch = (isFirstMatch?: boolean) => {
     const playersCards = dealCards(playersOrder.length)
@@ -63,7 +56,8 @@ export function GameContextProvider({ children }: GameContextProviderProps) {
     })
   }
 
-  const placeCard = (card: Card, playerId: string) => {
+  const placeCard = (card: CardModel, playerId: string) => {
+    if (match.winner) return
     if (match.currentPlayer !== playerId) return
 
     const currentValues = match.table.cards[card.suit]
@@ -94,8 +88,6 @@ export function GameContextProvider({ children }: GameContextProviderProps) {
       hasWon ? match.startingPlayer! : match.currentPlayer!
     )
 
-    console.log(nextPlayer)
-
     const tableAccumulatedPoints = match.table.accumulated
 
     setMatch((state) => ({
@@ -123,6 +115,7 @@ export function GameContextProvider({ children }: GameContextProviderProps) {
     setPlayers((state) => ({
       ...state,
       [playerId]: {
+        ...state[playerId],
         accumulated: state[playerId].accumulated + tableAccumulatedPoints,
         matchesWon: state[playerId].matchesWon + 1,
       },
@@ -130,6 +123,7 @@ export function GameContextProvider({ children }: GameContextProviderProps) {
   }
 
   const dropAndSkipTurn = (playerId: string) => {
+    if (match.winner) return
     if (match.currentPlayer !== playerId) return
 
     const nextPlayer = getNextPlayer(playersOrder, match.currentPlayer!)
@@ -154,14 +148,14 @@ export function GameContextProvider({ children }: GameContextProviderProps) {
   const autoPlay = (playerId?: string) => {
     if (!playerId || playerId === 'user') return
 
-    setTimeout(() => {
+    return setTimeout(() => {
       const cards = match.players[playerId].cards
       const placeableCards = getPlaceableCards(cards, match.table.cards)
 
       if (!placeableCards.length) return dropAndSkipTurn(playerId)
 
       placeCard(placeableCards[0], playerId)
-    }, 2000)
+    }, AUTOPLAY_DELAY_MS)
   }
 
   useEffect(() => {
@@ -170,7 +164,11 @@ export function GameContextProvider({ children }: GameContextProviderProps) {
 
   useEffect(() => {
     if (match.winner) return
-    autoPlay(match.currentPlayer)
+    const timeout = autoPlay(match.currentPlayer)
+
+    return () => {
+      clearTimeout(timeout)
+    }
   }, [match.currentPlayer, match.winner])
 
   return (
