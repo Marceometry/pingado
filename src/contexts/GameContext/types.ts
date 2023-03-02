@@ -1,4 +1,4 @@
-export type PlayerChipColor = 'black' | 'red' | 'yellow' | 'blue'
+import { CustomColor } from '@/styles'
 
 export type CardSuit = 'clubs' | 'diamonds' | 'hearts' | 'spades'
 
@@ -12,7 +12,7 @@ export type Player = {
   accumulated: number
   matchesWon: number
   name: string
-  chipColor?: PlayerChipColor
+  chipColor?: CustomColor
 }
 
 export type Players = {

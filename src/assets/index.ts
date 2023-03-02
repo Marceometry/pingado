@@ -1,2 +1,2 @@
 export * from './chip'
-export * from './suits-icon'
+export * from './suits'

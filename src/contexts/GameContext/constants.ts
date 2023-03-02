@@ -1,4 +1,5 @@
-import { Match, MatchTable, PlayerChipColor, Players } from './types'
+import { CustomColor } from '@/styles'
+import { Match, MatchTable, Players } from './types'
 
 export const AUTOPLAY_DELAY_MS = 1000
 
@@ -19,7 +20,7 @@ export const CARDS_PER_PLAYER = TOTAL_CARDS / NUMBER_OF_PLAYERS
 
 export const MIDDLE_CARD = Math.ceil(CARDS_PER_PLAYER / 2)
 
-export const CHIP_COLORS: PlayerChipColor[] = ['black', 'red', 'yellow', 'blue']
+export const CHIP_COLORS: CustomColor[] = ['black', 'red', 'yellow', 'blue']
 
 export const playerList = new Array(NUMBER_OF_PLAYERS)
   .fill('')

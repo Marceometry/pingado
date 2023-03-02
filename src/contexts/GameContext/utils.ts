@@ -1,4 +1,4 @@
-import { shuffle } from '../../utils'
+import { shuffle } from '@/utils'
 import { CARDS_PER_SUIT, MIDDLE_CARD } from './constants'
 import { CardModel, CardSuit, MatchTableCards } from './types'
 

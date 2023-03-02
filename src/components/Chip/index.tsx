@@ -1,21 +1,12 @@
-import { ChipIcon } from '../../assets'
-import { PlayerChipColor } from '../../contexts'
-import { Wrapper } from '../../components'
-import './styles.css'
+import { ChipIcon } from '@/assets'
+import { CustomColor, theme } from '@/styles'
+import { ChipContainer } from './styles'
 
 type ChipProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   accumulated: number
   size?: number
   as?: 'button' | 'span'
-  color?: 'white' | PlayerChipColor
-}
-
-const colors = {
-  white: '#cccccc',
-  black: '#181818',
-  red: '#af2121',
-  yellow: '#bebe17',
-  blue: '#2020af',
+  color?: 'white' | CustomColor
 }
 
 export const Chip = ({
@@ -25,16 +16,13 @@ export const Chip = ({
   color = 'white',
   ...props
 }: ChipProps) => {
+  const chipColor = color === 'white' ? theme.gray : theme.customColors[color]
+
   return (
-    <Wrapper
-      as={as}
-      className={`chip ${as === 'button' ? 'chip-button' : ''}`}
-      data-accumulated={accumulated}
-      {...props}
-    >
+    <ChipContainer as={as} accumulated={accumulated} {...props}>
       <div style={{ width: size, height: size }}>
-        <ChipIcon color={colors[color]} size={size} />
+        <ChipIcon color={chipColor} size={size} />
       </div>
-    </Wrapper>
+    </ChipContainer>
   )
 }

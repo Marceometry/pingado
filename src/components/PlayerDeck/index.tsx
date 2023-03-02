@@ -3,8 +3,9 @@ import {
   useGameContext,
   getPlaceableCards,
   organizeCards,
-} from '../../contexts'
-import { Card, CARD_WIDTH, Chip } from '../../components'
+} from '@/contexts'
+import { Card, Chip } from '@/components'
+import { CardsContainer, DECK_CARD_OFFSET, PlayerDeckContainer } from './styles'
 
 export type PlayerDeckProps = {
   playerId: string
@@ -32,58 +33,45 @@ export const PlayerDeck = ({
   const cardList = isUser ? organizeCards(cards) : cards
   const placeableCards = getPlaceableCards(cards, table.cards)
 
-  const cardOffset = CARD_WIDTH * 0.6
+  const isOnTop = position === 'top'
+  const isOnBottom = position === 'bottom'
+  const isOnRight = position === 'right'
+  const isOnLeft = position === 'left'
+  const isOnSide = isOnLeft || isOnRight
 
-  const isInTop = position === 'top'
-  const isInBottom = position === 'bottom'
-  const isInRight = position === 'right'
-  const isInLeft = position === 'left'
-
-  const deckOrientation = isInBottom
+  const deckOrientation = isOnBottom
     ? 'row'
-    : isInLeft
+    : isOnLeft
     ? 'column'
-    : isInTop
+    : isOnTop
     ? 'row-reverse'
     : 'column-reverse'
 
   return (
-    <div
-      style={{
-        gap: '2rem',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexDirection: deckOrientation,
-        top: isInTop ? 12 : undefined,
-        bottom: isInBottom ? 12 : undefined,
-        left: isInLeft ? 12 : undefined,
-        right: isInRight ? 12 : undefined,
-        position: 'absolute',
-      }}
+    <PlayerDeckContainer
+      flexDirection={deckOrientation}
+      isVertical={isOnSide}
+      isHorizontal={isOnTop || isOnBottom}
+      top={isOnTop ? 12 : undefined}
+      bottom={isOnBottom ? 12 : undefined}
+      left={isOnLeft ? 12 : undefined}
+      right={isOnRight ? 12 : undefined}
+      highlightName={isCurrentPlayer}
     >
-      <h2 style={{ color: isCurrentPlayer ? 'black' : 'white' }}>
-        {players[playerId].name}
-      </h2>
+      <h2>{players[playerId].name}</h2>
 
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: isInLeft || isInRight ? 'column' : 'row',
-          marginTop: winner ? 0 : isInLeft || isInRight ? cardOffset : 0,
-          marginLeft: winner ? 0 : isInTop ? cardOffset : 0,
-        }}
-      >
+      <CardsContainer isOnSide={isOnSide} isOnTop={isOnTop} noOffset={!!winner}>
         {cardList.map((card) => (
           <Card
             as={isUser && !winner ? 'button' : 'span'}
             key={card.label + card.suit}
             suit={card.suit}
             label={card.label}
+            backColor={players[playerId].chipColor}
             onClick={() => placeCard(card, playerId)}
-            rotate={!winner && (isInLeft || isInRight)}
-            marginTop={winner ? 0 : isInLeft || isInRight ? cardOffset : 0}
-            marginLeft={winner ? 0 : isInTop ? cardOffset : 0}
+            rotate={!winner && isOnSide}
+            marginTop={winner ? 0 : isOnSide ? DECK_CARD_OFFSET : 0}
+            marginLeft={winner ? 0 : isOnTop ? DECK_CARD_OFFSET : 0}
             isHidden={!isUser && !winner}
             isHighlighted={
               !winner &&
@@ -93,7 +81,7 @@ export const PlayerDeck = ({
             }
           />
         ))}
-      </div>
+      </CardsContainer>
 
       <Chip
         as={isUser && !winner ? 'button' : 'span'}
@@ -102,6 +90,6 @@ export const PlayerDeck = ({
         disabled={!!winner || !isUser || !!placeableCards.length}
         color={players[playerId].chipColor}
       />
-    </div>
+    </PlayerDeckContainer>
   )
 }
