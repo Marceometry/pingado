@@ -4,7 +4,6 @@ import {
   getCardLabel,
   getTableCardList,
   useGameContext,
-  CARDS_PER_SUIT,
 } from '@/contexts'
 import { Card } from '@/components'
 import {
@@ -19,12 +18,13 @@ type CardSequenceProps = {
 
 export const CardSequence = ({ suit }: CardSequenceProps) => {
   const {
+    gameSettings: { cardsPerSuit },
     match: { table },
   } = useGameContext()
 
   const cards = getTableCardList(table.cards[suit])
   const cardsOffset =
-    cards.length === CARDS_PER_SUIT
+    cards.length === cardsPerSuit
       ? PACK_CARDS_OFFSET.closed
       : PACK_CARDS_OFFSET.open
 

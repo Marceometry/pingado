@@ -1,13 +1,19 @@
 import { ThemeProvider } from 'styled-components'
-import { GlobalStyle, theme } from './styles'
-import { Home } from './pages'
+import { MantineProvider } from '@mantine/core'
+import { GameContextProvider } from '@/contexts'
+import { GlobalStyle, theme } from '@/styles'
+import { Router } from '@/router'
 
 export function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <GlobalStyle />
+    <MantineProvider theme={{ colorScheme: 'dark' }}>
+      <ThemeProvider theme={theme}>
+        <GameContextProvider>
+          <GlobalStyle />
 
-      <Home />
-    </ThemeProvider>
+          <Router />
+        </GameContextProvider>
+      </ThemeProvider>
+    </MantineProvider>
   )
 }

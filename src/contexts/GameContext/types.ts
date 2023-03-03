@@ -1,4 +1,4 @@
-import { CustomColor } from '@/styles'
+import { CustomColor, TableBackgroundColor } from '@/styles'
 
 export type CardSuit = 'clubs' | 'diamonds' | 'hearts' | 'spades'
 
@@ -14,6 +14,8 @@ export type Player = {
   name: string
   chipColor?: CustomColor
 }
+
+export type PlayerWithId = Player & { id: string }
 
 export type Players = {
   [id: string]: Player
@@ -43,4 +45,37 @@ export type Match = {
   players: {
     [id: string]: MatchPlayer
   }
+}
+
+export type CreateGameFormData = {
+  numberOfPlayers: number
+  totalCards: number
+}
+
+export type GameSettings = {
+  playersOrder: string[]
+  totalCards: number
+  cardsPerSuit: number
+  cardsPerPlayer: number
+  middleCard: number
+}
+
+export type InterfaceSettings = {
+  userChipColor: CustomColor
+  tableColor: TableBackgroundColor
+}
+
+export type GameContextData = {
+  match: Match
+  user: PlayerWithId
+  players: Players
+  gameSettings: GameSettings
+  interfaceSettings: InterfaceSettings
+  createGame: (data: CreateGameFormData) => void
+  restartMatch: () => void
+  stopGame: () => void
+  placeCard: (card: CardModel) => void
+  dropAndSkipTurn: () => void
+  updateTableColor: (value: TableBackgroundColor) => void
+  updateUserColor: (value: CustomColor) => void
 }

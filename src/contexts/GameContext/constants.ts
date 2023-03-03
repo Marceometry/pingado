@@ -1,44 +1,24 @@
 import { CustomColor } from '@/styles'
-import { Match, MatchTable, Players } from './types'
+import { GameSettings, InterfaceSettings, Match, MatchTable } from './types'
+
+export const USER_ID = 'user'
 
 export const AUTOPLAY_DELAY_MS = 1000
 
-export const NUMBER_OF_PLAYERS = 4
-
-const TOTAL_CARDS_BY_NUMBER_OF_PLAYERS = {
-  3: 36,
-  4: 40,
-  5: 40,
-  6: 48,
-}
-
-export const TOTAL_CARDS = TOTAL_CARDS_BY_NUMBER_OF_PLAYERS[NUMBER_OF_PLAYERS]
-
-export const CARDS_PER_SUIT = TOTAL_CARDS / 4
-
-export const CARDS_PER_PLAYER = TOTAL_CARDS / NUMBER_OF_PLAYERS
-
-export const MIDDLE_CARD = Math.ceil(CARDS_PER_PLAYER / 2)
-
-export const CHIP_COLORS: CustomColor[] = ['black', 'red', 'yellow', 'blue']
-
-export const playerList = new Array(NUMBER_OF_PLAYERS)
-  .fill('')
-  .map((_, index) => (!index ? 'user' : String(index + 1)))
+export const CHIP_COLORS: CustomColor[] = [
+  'black',
+  'red',
+  'yellow',
+  'blue',
+  'green',
+  'purple',
+]
 
 export const defaultPlayerStats = {
   accumulated: 30,
   matchesWon: 0,
+  name: '',
 }
-
-export const playersObj = playerList.reduce((acc, item, index) => {
-  acc[item] = {
-    ...defaultPlayerStats,
-    name: item === 'user' ? 'Você' : `Jogador ${item}`,
-    chipColor: CHIP_COLORS[index],
-  }
-  return acc
-}, {} as Players)
 
 export const defaultTableState: MatchTable = {
   accumulated: 0,
@@ -53,4 +33,17 @@ export const defaultTableState: MatchTable = {
 export const defaultMatchState: Match = {
   players: {},
   table: defaultTableState,
+}
+
+export const defaultGameSettings: GameSettings = {
+  playersOrder: [USER_ID],
+  totalCards: 40,
+  cardsPerPlayer: 10,
+  cardsPerSuit: 10,
+  middleCard: 5,
+}
+
+export const defaultInterfaceSettings: InterfaceSettings = {
+  tableColor: 'green',
+  userChipColor: 'black',
 }

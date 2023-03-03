@@ -7,6 +7,7 @@ export const Table = () => {
   const {
     players,
     restartMatch,
+    interfaceSettings: { tableColor },
     match: {
       table: { accumulated },
       winner,
@@ -14,7 +15,7 @@ export const Table = () => {
   } = useGameContext()
 
   return (
-    <TableContainer background='green'>
+    <TableContainer background={tableColor}>
       {winner && (
         <h2>
           Vencedor da rodada: {players[winner].name} (+{accumulated} fichas)

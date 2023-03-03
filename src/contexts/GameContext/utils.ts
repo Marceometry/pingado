@@ -1,5 +1,4 @@
 import { shuffle } from '@/utils'
-import { CARDS_PER_SUIT, MIDDLE_CARD } from './constants'
 import { CardModel, CardSuit, MatchTableCards } from './types'
 
 const cardSuits: CardSuit[] = ['clubs', 'diamonds', 'hearts', 'spades']
@@ -9,12 +8,23 @@ export const getSuitColor = (suit: CardSuit) => {
 }
 
 export const getCardLabel = (value: number = 0) => {
-  return value === 1 ? 'A' : String(value)
+  switch (value) {
+    case 1:
+      return 'A'
+    case 11:
+      return 'J'
+    case 12:
+      return 'Q'
+    case 13:
+      return 'K'
+    default:
+      return String(value)
+  }
 }
 
-const generateCards = (): CardModel[] => {
+const generateCards = (cardsPerSuit: number): CardModel[] => {
   return cardSuits.reduce((acc, item) => {
-    for (let i = 1; i <= CARDS_PER_SUIT; i++) {
+    for (let i = 1; i <= cardsPerSuit; i++) {
       acc.push({
         suit: item,
         value: i,
@@ -25,8 +35,8 @@ const generateCards = (): CardModel[] => {
   }, [] as CardModel[])
 }
 
-export const dealCards = (numberOfPlayers = 4) => {
-  const cards = generateCards()
+export const dealCards = (numberOfPlayers = 4, cardsPerSuit = 10) => {
+  const cards = generateCards(cardsPerSuit)
   const shuffledCards = shuffle(cards)
   const cardsPerPlayer = cards.length / numberOfPlayers
 
@@ -52,13 +62,14 @@ export const getNextPlayer = (
 
 export const getPlaceableCards = (
   playerCards: CardModel[],
-  tableCards: MatchTableCards
+  tableCards: MatchTableCards,
+  middleCard: number
 ) => {
   if (!playerCards || !tableCards) return []
 
   return playerCards.filter((card) => {
     if (!tableCards[card.suit]) {
-      if (card.value === MIDDLE_CARD) return true
+      if (card.value === middleCard) return true
       return false
     }
     if (card.value + 1 === tableCards[card.suit]![0]) return true

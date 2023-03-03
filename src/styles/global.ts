@@ -14,10 +14,19 @@ export const GlobalStyle = createGlobalStyle`
     background-color: #242424;
   }
 
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
 
   button {
     border: 0;
     background-color: transparent;
+    color: inherit;
     cursor: pointer;
   }
 

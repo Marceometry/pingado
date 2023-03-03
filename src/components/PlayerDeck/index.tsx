@@ -21,17 +21,21 @@ export const PlayerDeck = ({
   position = 'right',
 }: PlayerDeckProps) => {
   const {
+    user,
     players,
     placeCard,
     dropAndSkipTurn,
+    gameSettings: { middleCard },
     match: { currentPlayer, table, winner },
   } = useGameContext()
 
-  const isUser = playerId === 'user'
+  const isUser = playerId === user.id
   const isCurrentPlayer = currentPlayer === playerId
 
   const cardList = isUser ? organizeCards(cards) : cards
-  const placeableCards = getPlaceableCards(cards, table.cards)
+  const placeableCards = getPlaceableCards(cards, table.cards, middleCard)
+
+  const shouldDisableButtons = !isUser || !isCurrentPlayer || winner
 
   const isOnTop = position === 'top'
   const isOnBottom = position === 'bottom'
@@ -63,12 +67,11 @@ export const PlayerDeck = ({
       <CardsContainer isOnSide={isOnSide} isOnTop={isOnTop} noOffset={!!winner}>
         {cardList.map((card) => (
           <Card
-            as={isUser && !winner ? 'button' : 'span'}
+            as={shouldDisableButtons ? 'span' : 'button'}
             key={card.label + card.suit}
             suit={card.suit}
             label={card.label}
             backColor={players[playerId].chipColor}
-            onClick={() => placeCard(card, playerId)}
             rotate={!winner && isOnSide}
             marginTop={winner ? 0 : isOnSide ? DECK_CARD_OFFSET : 0}
             marginLeft={winner ? 0 : isOnTop ? DECK_CARD_OFFSET : 0}
@@ -79,15 +82,19 @@ export const PlayerDeck = ({
                 (item) => item.value === card.value && item.suit === card.suit
               )
             }
+            onClick={() => {
+              if (shouldDisableButtons) return
+              placeCard(card)
+            }}
           />
         ))}
       </CardsContainer>
 
       <Chip
-        as={isUser && !winner ? 'button' : 'span'}
+        as={shouldDisableButtons ? 'span' : 'button'}
         accumulated={accumulated}
-        onClick={() => dropAndSkipTurn(playerId)}
-        disabled={!!winner || !isUser || !!placeableCards.length}
+        onClick={() => dropAndSkipTurn()}
+        disabled={!!placeableCards.length}
         color={players[playerId].chipColor}
       />
     </PlayerDeckContainer>
