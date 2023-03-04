@@ -3,14 +3,15 @@ import { useDisclosure } from '@mantine/hooks'
 import { Modal as MantineModal } from '@mantine/core'
 import { useGameContext } from '@/contexts'
 import { CustomColor, TableBackgroundColor, theme } from '@/styles'
-import { OpenModalButton } from './styles'
+import { ColorButton, ColorList, ModalContent, OpenModalButton } from './styles'
 
 export const Modal = () => {
   const {
-    interfaceSettings: { tableColor },
+    interfaceSettings: { tableColor, cardSize },
     user: { chipColor },
     updateTableColor,
     updateUserColor,
+    updateCardSize,
   } = useGameContext()
   const [opened, { open, close }] = useDisclosure(false)
 
@@ -32,83 +33,60 @@ export const Modal = () => {
         padding={24}
         centered
       >
-        <div
-          style={{
-            paddingTop: 16,
-            gap: 32,
-            display: 'grid',
-            placeItems: 'center',
-          }}
-        >
+        <ModalContent>
+          <div style={{ display: 'flex', gap: 16 }}>
+            <label htmlFor='cardSize'>
+              Tamanho das cartas (visível apenas para você):
+            </label>
+            <input
+              type='range'
+              name='cardSize'
+              id='cardSize'
+              min='16'
+              max='34'
+              step='2'
+              value={cardSize.multiplier}
+              onChange={(e) => updateCardSize(Number(e.target.value))}
+            />
+            <span>{cardSize.multiplier}</span>
+          </div>
+
           <div>
             <label htmlFor='tableColor'>
               Cor de fundo da mesa (visível apenas para você):
             </label>
 
-            <div
-              id='tableColor'
-              style={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                gap: 10,
-                marginTop: 16,
-              }}
-            >
+            <ColorList id='tableColor'>
               {tableColors.map((item) => (
-                <button
+                <ColorButton
                   key={item.name}
-                  style={{
-                    width: 50,
-                    height: 50,
-                    fontSize: 0,
-                    background: item.value,
-                    borderRadius: 8,
-                    border: '2px solid transparent',
-                    borderColor:
-                      tableColor === item.name ? 'white' : 'transparent',
-                    transition: 'border-color 0.2s',
-                  }}
+                  background={item.value}
+                  isSelected={tableColor === item.name}
                   onClick={() =>
                     updateTableColor(item.name as TableBackgroundColor)
                   }
                 />
               ))}
-            </div>
+            </ColorList>
           </div>
+
           <div>
             <label htmlFor='userColor'>
               Cor das suas fichas e cartas (visível para todos):
             </label>
 
-            <div
-              id='userColor'
-              style={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                gap: 10,
-                marginTop: 16,
-              }}
-            >
+            <ColorList id='userColor'>
               {userColors.map((item) => (
-                <button
+                <ColorButton
                   key={item.name}
-                  style={{
-                    width: 50,
-                    height: 50,
-                    fontSize: 0,
-                    background: item.value,
-                    borderRadius: 8,
-                    border: '2px solid transparent',
-                    borderColor:
-                      chipColor === item.name ? 'white' : 'transparent',
-                    transition: 'border-color 0.2s',
-                  }}
+                  background={item.value}
+                  isSelected={chipColor === item.name}
                   onClick={() => updateUserColor(item.name as CustomColor)}
                 />
               ))}
-            </div>
+            </ColorList>
           </div>
-        </div>
+        </ModalContent>
       </MantineModal>
 
       <OpenModalButton onClick={open}>

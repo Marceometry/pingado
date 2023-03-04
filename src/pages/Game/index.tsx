@@ -1,35 +1,17 @@
-import { Modal, PlayerDeck, Table } from '@/components'
+import { Modal, PlayerDecks, Table } from '@/components'
 import { useGameContext } from '@/contexts'
 import { GamePageContainer } from './styles'
 
-const positions = ['bottom', 'left', 'top', 'right'] as const
-
 export const Game = () => {
-  const {
-    match,
-    players,
-    gameSettings: { playersOrder },
-  } = useGameContext()
+  const { match } = useGameContext()
 
   return (
     <GamePageContainer>
       <Table />
 
-      {!match || !Object.keys(match.players).length ? (
-        <></>
-      ) : (
+      {!!match && !!Object.keys(match.players).length && (
         <>
-          <Modal />
-
-          {playersOrder.map((playerId, index) => (
-            <PlayerDeck
-              key={playerId}
-              playerId={playerId}
-              accumulated={players[playerId].accumulated}
-              cards={match.players[playerId].cards}
-              position={positions[index]}
-            />
-          ))}
+          <PlayerDecks />
         </>
       )}
     </GamePageContainer>

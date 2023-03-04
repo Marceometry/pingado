@@ -18,6 +18,7 @@ type CardSequenceProps = {
 
 export const CardSequence = ({ suit }: CardSequenceProps) => {
   const {
+    interfaceSettings: { cardSize },
     gameSettings: { cardsPerSuit },
     match: { table },
   } = useGameContext()
@@ -25,13 +26,16 @@ export const CardSequence = ({ suit }: CardSequenceProps) => {
   const cards = getTableCardList(table.cards[suit])
   const cardsOffset =
     cards.length === cardsPerSuit
-      ? PACK_CARDS_OFFSET.closed
-      : PACK_CARDS_OFFSET.open
+      ? cardSize.height * PACK_CARDS_OFFSET.closed
+      : cardSize.height * PACK_CARDS_OFFSET.open
 
   return (
-    <CardSequenceContainer>
+    <CardSequenceContainer cardHeight={cardSize.height}>
       {!cards.length ? (
-        <CardsPlaceholder>
+        <CardsPlaceholder
+          cardWidth={cardSize.width}
+          cardHeight={cardSize.height}
+        >
           <SuitIcon suit={suit} size={32} />
         </CardsPlaceholder>
       ) : (

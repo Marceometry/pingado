@@ -1,8 +1,8 @@
 import { SuitIcon } from '@/assets'
-import { CardSuit, getSuitColor } from '@/contexts'
+import { CardSuit, getSuitColor, useGameContext } from '@/contexts'
 import { CustomColor } from '@/styles'
 import { CardBack } from './components'
-import { CardContainer, SUIT_ICON_SIZE } from './styles'
+import { CardContainer } from './styles'
 
 export type CardProps = {
   suit: CardSuit
@@ -31,9 +31,14 @@ export const Card = ({
   zIndex,
   onClick,
 }: CardProps) => {
+  const {
+    interfaceSettings: { cardSize },
+  } = useGameContext()
+
   return (
     <CardContainer
       as={as}
+      cardSize={cardSize}
       onClick={onClick}
       marginTop={marginTop}
       marginLeft={marginLeft}
@@ -45,7 +50,7 @@ export const Card = ({
       {!isHidden ? (
         <>
           <span>{label}</span>
-          <SuitIcon suit={suit} size={SUIT_ICON_SIZE} />
+          <SuitIcon suit={suit} size={cardSize.iconSize} />
           <span>{label}</span>
         </>
       ) : (

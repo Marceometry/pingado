@@ -1,9 +1,16 @@
 import { CustomColor } from '@/styles'
 import { GameSettings, InterfaceSettings, Match, MatchTable } from './types'
+import { getCardSizes } from './utils'
 
 export const USER_ID = 'user'
 
+export const WATCH_MODE = false
+
 export const AUTOPLAY_DELAY_MS = 1000
+
+export const CARD_BASE_WIDTH = 3
+export const CARD_BASE_HEIGHT = 4
+export const DEFAULT_CARD_SIZE_MULTIPLIER = 22
 
 export const CHIP_COLORS: CustomColor[] = [
   'black',
@@ -46,4 +53,5 @@ export const defaultGameSettings: GameSettings = {
 export const defaultInterfaceSettings: InterfaceSettings = {
   tableColor: 'green',
   userChipColor: 'black',
+  cardSize: getCardSizes(),
 }

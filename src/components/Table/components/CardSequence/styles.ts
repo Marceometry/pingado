@@ -1,21 +1,25 @@
 import styled from 'styled-components'
-import { CARD_HEIGHT, CARD_WIDTH } from '@/components'
 
 export const PACK_CARDS_OFFSET = {
-  open: CARD_HEIGHT * 0.65,
-  closed: CARD_HEIGHT * 0.95,
+  open: 0.65,
+  closed: 0.95,
 }
 
-export const CardSequenceContainer = styled.div`
+type CardsProps = {
+  cardHeight: number
+  cardWidth?: number
+}
+
+export const CardSequenceContainer = styled.div<CardsProps>`
   display: grid;
   place-items: center;
-  margin-top: ${PACK_CARDS_OFFSET.open}px;
+  margin-top: ${({ cardHeight }) => cardHeight * PACK_CARDS_OFFSET.open}px;
 `
 
-export const CardsPlaceholder = styled.span`
+export const CardsPlaceholder = styled.span<CardsProps>`
   display: grid;
   place-items: center;
-  width: ${CARD_WIDTH}px;
-  height: ${CARD_HEIGHT}px;
-  margin-top: -${PACK_CARDS_OFFSET.open}px;
+  width: ${({ cardWidth }) => cardWidth}px;
+  height: ${({ cardHeight }) => cardHeight}px;
+  margin-top: -${({ cardHeight }) => cardHeight * PACK_CARDS_OFFSET.open}px;
 `

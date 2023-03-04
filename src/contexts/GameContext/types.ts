@@ -60,9 +60,18 @@ export type GameSettings = {
   middleCard: number
 }
 
+export type CardSizes = {
+  multiplier: number
+  width: number
+  height: number
+  iconSize: number
+  fontSize: number
+}
+
 export type InterfaceSettings = {
   userChipColor: CustomColor
   tableColor: TableBackgroundColor
+  cardSize: CardSizes
 }
 
 export type GameContextData = {
@@ -78,4 +87,5 @@ export type GameContextData = {
   dropAndSkipTurn: () => void
   updateTableColor: (value: TableBackgroundColor) => void
   updateUserColor: (value: CustomColor) => void
+  updateCardSize: (size: number) => void
 }

@@ -1,24 +1,19 @@
 import styled from 'styled-components'
-import { CARD_HEIGHT } from '@/components'
 import { TableBackgroundColor } from '@/styles'
-
-const TABLE_PADDING = {
-  vertical: CARD_HEIGHT * 1.5,
-  horizontal: CARD_HEIGHT * 2.5,
-}
 
 type TableProps = {
   background: TableBackgroundColor
+  cardHeight: number
 }
 
 export const TableContainer = styled.div<TableProps>`
   width: 100%;
   height: 100%;
-  padding: ${TABLE_PADDING.vertical}px ${TABLE_PADDING.horizontal}px;
+  padding: ${({ cardHeight }) => `${cardHeight * 1.5}px ${cardHeight * 2.5}px`};
+  background: ${({ background, theme }) => theme.tableColors[background]};
   display: grid;
   place-items: center;
   gap: 16px;
-  background: ${({ background, theme }) => theme.tableColors[background]};
 
   > div {
     display: flex;

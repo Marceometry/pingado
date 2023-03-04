@@ -1,11 +1,18 @@
 import { shuffle } from '@/utils'
-import { CHIP_COLORS, defaultPlayerStats, USER_ID } from '../../constants'
+import {
+  CHIP_COLORS,
+  defaultPlayerStats,
+  USER_ID,
+  WATCH_MODE,
+} from '../../constants'
 import { Players } from '../../types'
 
 export const generatePlayerList = (numberOfPlayers: number) => {
   return new Array(numberOfPlayers)
     .fill('')
-    .map((_, index) => (!index ? USER_ID : String(index + 1)))
+    .map((_, index) =>
+      !index ? (WATCH_MODE ? '1' : USER_ID) : String(index + 1)
+    )
 }
 
 export const generatePlayers = (playerList: string[]) => {

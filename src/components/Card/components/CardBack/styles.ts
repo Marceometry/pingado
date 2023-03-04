@@ -19,7 +19,7 @@ export const CardBackContainer = styled.div<CardBackProps>`
     width: 100%;
     height: 100%;
     border-radius: 2px;
-    border: 2px solid ${({ theme }) => theme.black};
+    border: 2px solid ${({ color, theme }) => theme.customColors[color]};
     padding: 8px;
 
     > div {

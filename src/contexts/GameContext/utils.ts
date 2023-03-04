@@ -1,7 +1,22 @@
 import { shuffle } from '@/utils'
+import {
+  CARD_BASE_HEIGHT,
+  CARD_BASE_WIDTH,
+  DEFAULT_CARD_SIZE_MULTIPLIER,
+} from './constants'
 import { CardModel, CardSuit, MatchTableCards } from './types'
 
 const cardSuits: CardSuit[] = ['clubs', 'diamonds', 'hearts', 'spades']
+
+export const getCardSizes = (size: number = DEFAULT_CARD_SIZE_MULTIPLIER) => {
+  const width = CARD_BASE_WIDTH * size
+  const height = CARD_BASE_HEIGHT * size
+
+  const iconSize = size - 2
+  const fontSize = size - 6
+
+  return { width, height, multiplier: size, iconSize, fontSize }
+}
 
 export const getSuitColor = (suit: CardSuit) => {
   return suit === 'clubs' || suit === 'spades' ? 'black' : 'red'
@@ -88,19 +103,17 @@ export const getTableCardList = (suit: [number, number] | null) => {
   return cards
 }
 
+const orderSuitCards = (cards: CardModel[], suit: CardSuit) => {
+  return cards
+    .filter((item) => item.suit === suit)
+    .sort((a, b) => a.value - b.value)
+}
+
 export const organizeCards = (cards: CardModel[]) => {
-  const clubs = cards
-    .filter((item) => item.suit === 'clubs')
-    .sort((a, b) => a.value - b.value)
-  const diamonds = cards
-    .filter((item) => item.suit === 'diamonds')
-    .sort((a, b) => a.value - b.value)
-  const hearts = cards
-    .filter((item) => item.suit === 'hearts')
-    .sort((a, b) => a.value - b.value)
-  const spades = cards
-    .filter((item) => item.suit === 'spades')
-    .sort((a, b) => a.value - b.value)
+  const clubs = orderSuitCards(cards, 'clubs')
+  const diamonds = orderSuitCards(cards, 'diamonds')
+  const hearts = orderSuitCards(cards, 'hearts')
+  const spades = orderSuitCards(cards, 'spades')
 
   return [...clubs, ...diamonds, ...spades, ...hearts]
 }

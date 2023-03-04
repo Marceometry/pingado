@@ -8,6 +8,8 @@ import {
   defaultGameSettings,
   defaultPlayerStats,
   USER_ID,
+  CARD_BASE_WIDTH,
+  CARD_BASE_HEIGHT,
 } from '../../constants'
 import {
   CardModel,
@@ -20,7 +22,12 @@ import {
   Players,
   PlayerWithId,
 } from '../../types'
-import { getPlaceableCards, dealCards, getNextPlayer } from '../../utils'
+import {
+  getPlaceableCards,
+  dealCards,
+  getNextPlayer,
+  getCardSizes,
+} from '../../utils'
 import { generatePlayerList, generatePlayers, getCardsInfo } from './utils'
 
 export const useSinglePlayerContext = (): GameContextData => {
@@ -200,6 +207,15 @@ export const useSinglePlayerContext = (): GameContextData => {
     }))
   }
 
+  const updateCardSize = (size: number) => {
+    const cardSize = getCardSizes(size)
+
+    setInterfaceSettings((state) => ({
+      ...state,
+      cardSize,
+    }))
+  }
+
   useEffect(() => {
     if (gameSettings.playersOrder.length <= 1) return
     startMatch()
@@ -218,12 +234,6 @@ export const useSinglePlayerContext = (): GameContextData => {
     }
   }, [match.currentPlayer, match.winner])
 
-  useEffect(() => {
-    if (match.winner) {
-      startMatch()
-    }
-  }, [match.winner])
-
   return {
     match,
     user,
@@ -235,6 +245,7 @@ export const useSinglePlayerContext = (): GameContextData => {
     interfaceSettings,
     updateTableColor,
     updateUserColor,
+    updateCardSize,
     placeCard: (card) => placeCard(card),
     dropAndSkipTurn: () => dropAndSkipTurn(),
   }
