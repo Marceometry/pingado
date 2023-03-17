@@ -8,13 +8,12 @@ import {
   defaultGameSettings,
   defaultPlayerStats,
   USER_ID,
-  CARD_BASE_WIDTH,
-  CARD_BASE_HEIGHT,
+  WATCH_MODE,
 } from '../../constants'
 import {
   CardModel,
   CreateGameFormData,
-  GameContextData,
+  GameContextHookData,
   GameSettings,
   InterfaceSettings,
   Match,
@@ -30,7 +29,7 @@ import {
 } from '../../utils'
 import { generatePlayerList, generatePlayers, getCardsInfo } from './utils'
 
-export const useSinglePlayerContext = (): GameContextData => {
+export const useSinglePlayer = (): GameContextHookData => {
   const [gameSettings, setGameSettings] =
     useState<GameSettings>(defaultGameSettings)
   const [interfaceSettings, setInterfaceSettings] = useState<InterfaceSettings>(
@@ -193,8 +192,14 @@ export const useSinglePlayerContext = (): GameContextData => {
     }, AUTOPLAY_DELAY_MS)
   }
 
-  const updateTableColor = (color: TableBackgroundColor) => {
-    setInterfaceSettings((state) => ({ ...state, tableColor: color }))
+  const updateUserName = (name: string) => {
+    setPlayers((state) => ({
+      ...state,
+      user: {
+        ...state.user,
+        name,
+      },
+    }))
   }
 
   const updateUserColor = (color: CustomColor) => {
@@ -205,6 +210,10 @@ export const useSinglePlayerContext = (): GameContextData => {
         chipColor: color,
       },
     }))
+  }
+
+  const updateTableColor = (color: TableBackgroundColor) => {
+    setInterfaceSettings((state) => ({ ...state, tableColor: color }))
   }
 
   const updateCardSize = (size: number) => {
@@ -226,7 +235,10 @@ export const useSinglePlayerContext = (): GameContextData => {
   }, [players.user])
 
   useEffect(() => {
-    if (match.winner) return
+    if (match.winner) {
+      if (WATCH_MODE) setTimeout(startMatch, 2000)
+      return
+    }
     const timeout = autoPlay(match.currentPlayer)
 
     return () => {
@@ -243,8 +255,9 @@ export const useSinglePlayerContext = (): GameContextData => {
     stopGame,
     gameSettings,
     interfaceSettings,
-    updateTableColor,
+    updateUserName,
     updateUserColor,
+    updateTableColor,
     updateCardSize,
     placeCard: (card) => placeCard(card),
     dropAndSkipTurn: () => dropAndSkipTurn(),

@@ -6,6 +6,7 @@ export type CardModel = {
   suit: CardSuit
   value: number
   label: string
+  id?: string
 }
 
 export type Player = {
@@ -60,6 +61,8 @@ export type GameSettings = {
   middleCard: number
 }
 
+export type GameMode = 'solo' | 'multiplayer'
+
 export type CardSizes = {
   multiplier: number
   width: number
@@ -80,12 +83,16 @@ export type GameContextData = {
   players: Players
   gameSettings: GameSettings
   interfaceSettings: InterfaceSettings
+  setGameMode: (mode: GameMode) => void
   createGame: (data: CreateGameFormData) => void
   restartMatch: () => void
   stopGame: () => void
   placeCard: (card: CardModel) => void
   dropAndSkipTurn: () => void
-  updateTableColor: (value: TableBackgroundColor) => void
+  updateUserName: (name: string) => void
   updateUserColor: (value: CustomColor) => void
+  updateTableColor: (value: TableBackgroundColor) => void
   updateCardSize: (size: number) => void
 }
+
+export type GameContextHookData = Omit<GameContextData, 'setGameMode'>

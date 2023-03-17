@@ -13,11 +13,13 @@ const icons = {
 }
 
 type SuitIconProps = React.SVGProps<SVGSVGElement> & {
-  suit: CardSuit
+  suit?: CardSuit
   size?: number
 }
 
 export const SuitIcon = ({ suit, size = 20, ...props }: SuitIconProps) => {
+  if (!suit || !Object.keys(icons).includes(suit)) return <></>
+
   const Icon = icons[suit]
 
   return <Icon {...props} style={{ width: size, height: size }} />

@@ -1,13 +1,17 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import { Game, Home } from '@/pages'
+import { NewGame, Home, Game } from '@/pages'
 
 export const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route path='/single-player' element={<Game />} />
-        <Route path='/multi-player' element={<Game />} />
+
+        <Route path='/solo' element={<NewGame />} />
+        <Route path='/solo/play' element={<Game />} />
+
+        <Route path='/multiplayer' element={<NewGame />} />
+        <Route path='/multiplayer/play' element={<Game />} />
       </Routes>
     </BrowserRouter>
   )

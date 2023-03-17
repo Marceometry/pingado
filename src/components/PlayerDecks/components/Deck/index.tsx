@@ -82,9 +82,9 @@ export const Deck = ({
           return (
             <Card
               as={shouldDisableButtons || !isPlaceable ? 'span' : 'button'}
-              key={card.label + card.suit}
+              key={card.id || `${card.value}-${card.suit}`}
               suit={card.suit}
-              label={card.label}
+              value={card.value}
               backColor={players[playerId].chipColor}
               marginLeft={winner ? 0 : isOnTop ? cardOffset : 0}
               marginTop={winner ? 0 : isOnSide ? cardOffset : 0}

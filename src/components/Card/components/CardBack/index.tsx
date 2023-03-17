@@ -5,7 +5,7 @@ type CardBackProps = {
   color?: CustomColor
 }
 
-export const CardBack = ({ color = 'blue' }: CardBackProps) => {
+export const CardBack = ({ color = 'black' }: CardBackProps) => {
   return (
     <CardBackContainer color={color}>
       <div>

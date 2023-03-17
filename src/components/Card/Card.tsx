@@ -1,12 +1,17 @@
 import { SuitIcon } from '@/assets'
-import { CardSuit, getSuitColor, useGameContext } from '@/contexts'
+import {
+  CardSuit,
+  getCardLabel,
+  getSuitColor,
+  useGameContext,
+} from '@/contexts'
 import { CustomColor } from '@/styles'
 import { CardBack } from './components'
 import { CardContainer } from './styles'
 
 export type CardProps = {
   suit: CardSuit
-  label: string
+  value: number
   backColor?: CustomColor
   isHighlighted?: boolean
   isHidden?: boolean
@@ -21,7 +26,7 @@ export type CardProps = {
 export const Card = ({
   as,
   suit,
-  label,
+  value,
   backColor,
   isHighlighted,
   isHidden,
@@ -35,6 +40,8 @@ export const Card = ({
     interfaceSettings: { cardSize },
   } = useGameContext()
 
+  const label = getCardLabel(value)
+
   return (
     <CardContainer
       as={as}
@@ -45,7 +52,7 @@ export const Card = ({
       horizontal={rotate}
       zIndex={zIndex}
       highlighted={isHighlighted && !isHidden}
-      color={getSuitColor(suit)}
+      color={suit ? getSuitColor(suit) : 'black'}
     >
       {!isHidden ? (
         <>

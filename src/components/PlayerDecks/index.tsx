@@ -1,14 +1,17 @@
 import { useGameContext } from '@/contexts'
 import { Deck } from './components'
+import { changePlayersOrder } from './utils'
 
 export const PlayerDecks = () => {
   const {
+    user,
     match,
     players,
     interfaceSettings: { cardSize },
     gameSettings: { playersOrder },
   } = useGameContext()
 
+  const reorderedPlayers = changePlayersOrder(playersOrder, user.id)
   const numberOfPlayers = playersOrder.length
   const deckCardOffset =
     numberOfPlayers < 6 ? cardSize.width * 0.6 : cardSize.width * 0.9
@@ -24,12 +27,12 @@ export const PlayerDecks = () => {
 
   return (
     <>
-      {playersOrder.map((playerId, index) => (
+      {reorderedPlayers.map((playerId, index) => (
         <Deck
           key={playerId}
           playerId={playerId}
           accumulated={players[playerId].accumulated}
-          cards={match.players[playerId].cards}
+          cards={match.players[playerId]?.cards || []}
           cardOffset={deckCardOffset}
           position={positions[index]}
         />

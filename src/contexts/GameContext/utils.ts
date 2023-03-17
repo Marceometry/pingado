@@ -19,7 +19,7 @@ export const getCardSizes = (size: number = DEFAULT_CARD_SIZE_MULTIPLIER) => {
 }
 
 export const getSuitColor = (suit: CardSuit) => {
-  return suit === 'clubs' || suit === 'spades' ? 'black' : 'red'
+  return suit === 'diamonds' || suit === 'hearts' ? 'red' : 'black'
 }
 
 export const getCardLabel = (value: number = 0) => {
@@ -73,6 +73,14 @@ export const getNextPlayer = (
   const nextPlayerIndex =
     currentPlayerIndex + 1 === playersOrder.length ? 0 : currentPlayerIndex + 1
   return playersOrder[nextPlayerIndex]
+}
+
+export const isValidCard = (card: CardModel) => {
+  return !!card.label && cardSuits.includes(card.suit) && !isNaN(card.value)
+}
+
+export const isCardArray = (cards: CardModel[]) => {
+  return cards.every((card) => isValidCard(card))
 }
 
 export const getPlaceableCards = (

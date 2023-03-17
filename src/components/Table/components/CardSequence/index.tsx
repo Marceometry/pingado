@@ -40,12 +40,7 @@ export const CardSequence = ({ suit }: CardSequenceProps) => {
         </CardsPlaceholder>
       ) : (
         cards.map((value) => (
-          <Card
-            key={value}
-            suit={suit}
-            label={getCardLabel(value)}
-            marginTop={cardsOffset}
-          />
+          <Card key={value} suit={suit} value={value} marginTop={cardsOffset} />
         ))
       )}
     </CardSequenceContainer>
