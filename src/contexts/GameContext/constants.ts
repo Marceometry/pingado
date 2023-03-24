@@ -2,6 +2,8 @@ import { CustomColor } from '@/styles'
 import { GameSettings, InterfaceSettings, Match, MatchTable } from './types'
 import { getCardSizes } from './utils'
 
+export const SERVER_URL = import.meta.env.VITE_PUBLIC_SERVER_URL
+
 export const USER_ID = 'user'
 
 export const WATCH_MODE = false

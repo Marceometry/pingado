@@ -6,9 +6,10 @@ import {
   useState,
 } from 'react'
 import { v4 as uuid } from 'uuid'
+import { io, Socket } from 'socket.io-client'
 import { GameContextData, GameMode } from './types'
 import { useMultiPlayer, useSinglePlayer } from './hooks'
-import { io, Socket } from 'socket.io-client'
+import { SERVER_URL } from './constants'
 
 export type GameContextProviderProps = {
   children: ReactNode
@@ -39,7 +40,7 @@ export function GameContextProvider({ children }: GameContextProviderProps) {
 
   useEffect(() => {
     if (gameMode === 'multiplayer' && !socket) {
-      const newSocket = io('https://pingado-server-production.up.railway.app', {
+      const newSocket = io(SERVER_URL, {
         auth: socketAuth,
       })
       setSocket(newSocket)
