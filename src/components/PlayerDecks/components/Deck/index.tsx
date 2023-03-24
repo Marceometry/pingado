@@ -27,7 +27,7 @@ export const Deck = ({
     players,
     placeCard,
     dropAndSkipTurn,
-    interfaceSettings: { cardSize },
+    interfaceSettings: { cardSize, highlightCards },
     gameSettings: { middleCard },
     match: { currentPlayer, table, winner },
   } = useGameContext()
@@ -90,7 +90,7 @@ export const Deck = ({
               marginTop={winner ? 0 : isOnSide ? cardOffset : 0}
               rotate={!winner && isOnSide}
               isHidden={!winner && !isUser}
-              isHighlighted={!winner && isPlaceable}
+              isHighlighted={highlightCards && !winner && isPlaceable}
               onClick={() => {
                 if (shouldDisableButtons) return
                 placeCard(card)

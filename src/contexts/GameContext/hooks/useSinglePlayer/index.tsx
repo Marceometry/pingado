@@ -216,6 +216,10 @@ export const useSinglePlayer = (): GameContextHookData => {
     setInterfaceSettings((state) => ({ ...state, tableColor: color }))
   }
 
+  const updateCardsHighlight = (highlight: boolean) => {
+    setInterfaceSettings((state) => ({ ...state, highlightCards: highlight }))
+  }
+
   const updateCardSize = (size: number) => {
     const cardSize = getCardSizes(size)
 
@@ -258,6 +262,7 @@ export const useSinglePlayer = (): GameContextHookData => {
     updateUserName,
     updateUserColor,
     updateTableColor,
+    updateCardsHighlight,
     updateCardSize,
     placeCard: (card) => placeCard(card),
     dropAndSkipTurn: () => dropAndSkipTurn(),

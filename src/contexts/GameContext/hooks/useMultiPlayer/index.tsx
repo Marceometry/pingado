@@ -72,6 +72,10 @@ export const useMultiPlayer = (socket: Socket | null): GameContextHookData => {
     setInterfaceSettings((state) => ({ ...state, tableColor: color }))
   }
 
+  const updateCardsHighlight = (highlight: boolean) => {
+    setInterfaceSettings((state) => ({ ...state, highlightCards: highlight }))
+  }
+
   const updateCardSize = (size: number) => {
     const cardSize = getCardSizes(size)
 
@@ -80,18 +84,6 @@ export const useMultiPlayer = (socket: Socket | null): GameContextHookData => {
       cardSize,
     }))
   }
-
-  useEffect(() => {
-    console.log('players:', players)
-  }, [players])
-
-  useEffect(() => {
-    console.log('match:', match)
-  }, [match])
-
-  useEffect(() => {
-    console.log('gameSettings:', gameSettings)
-  }, [gameSettings])
 
   useEffect(() => {
     if (!socket) return
@@ -103,7 +95,6 @@ export const useMultiPlayer = (socket: Socket | null): GameContextHookData => {
     socket.on(
       SOCKET_EVENTS.playersUpdate,
       (data: { players: Players; playersOrder: string[] }) => {
-        console.log('playersUpdate:', data)
         setPlayers(data.players)
         setGameSettings((state) => ({
           ...state,
@@ -119,7 +110,6 @@ export const useMultiPlayer = (socket: Socket | null): GameContextHookData => {
         players: Players
         match: Match
       }) => {
-        console.log('game-state-on-join:', data)
         setMatch(data.match)
         setPlayers(data.players)
         setGameSettings(data.gameSettings)
@@ -129,19 +119,16 @@ export const useMultiPlayer = (socket: Socket | null): GameContextHookData => {
     socket.on(
       SOCKET_EVENTS.createGame,
       (data: { gameSettings: GameSettings; players: Players }) => {
-        console.log('createGame:', data)
         setPlayers(data.players)
         setGameSettings(data.gameSettings)
       }
     )
 
     socket.on(SOCKET_EVENTS.startMatch, (data: Match) => {
-      console.log('startMatch:', data)
       setMatch(data)
     })
 
     socket.on(SOCKET_EVENTS.matchUpdate, (data: Match) => {
-      console.log('matchUpdate:', data)
       setMatch((state) => {
         const players = !Object.keys(data.players).length
           ? {}
@@ -151,7 +138,6 @@ export const useMultiPlayer = (socket: Socket | null): GameContextHookData => {
     })
 
     socket.on(`cards-${id}`, (data: CardModel[]) => {
-      console.log('cards:', data)
       const cards = data.map((card) => ({
         ...card,
         label: getCardLabel(card.value),
@@ -196,6 +182,7 @@ export const useMultiPlayer = (socket: Socket | null): GameContextHookData => {
     updateUserName,
     updateUserColor,
     updateTableColor,
+    updateCardsHighlight,
     updateCardSize,
     placeCard: (card) => placeCard(card),
     dropAndSkipTurn: () => dropAndSkipTurn(),

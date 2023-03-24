@@ -56,4 +56,5 @@ export const defaultInterfaceSettings: InterfaceSettings = {
   tableColor: 'green',
   userChipColor: 'black',
   cardSize: getCardSizes(),
+  highlightCards: false,
 }

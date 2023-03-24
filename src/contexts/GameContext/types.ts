@@ -75,6 +75,7 @@ export type InterfaceSettings = {
   userChipColor: CustomColor
   tableColor: TableBackgroundColor
   cardSize: CardSizes
+  highlightCards: boolean
 }
 
 export type GameContextData = {
@@ -92,6 +93,7 @@ export type GameContextData = {
   updateUserName: (name: string) => void
   updateUserColor: (value: CustomColor) => void
   updateTableColor: (value: TableBackgroundColor) => void
+  updateCardsHighlight: (highlight: boolean) => void
   updateCardSize: (size: number) => void
 }
 

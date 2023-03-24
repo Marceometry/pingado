@@ -1,6 +1,12 @@
 import { GearSix } from 'phosphor-react'
 import { useDisclosure } from '@mantine/hooks'
-import { Button, Input, Modal as MantineModal, Slider } from '@mantine/core'
+import {
+  Button,
+  Checkbox,
+  Input,
+  Modal as MantineModal,
+  Slider,
+} from '@mantine/core'
 import { useGameContext } from '@/contexts'
 import { CustomColor, TableBackgroundColor, theme } from '@/styles'
 import { ColorButton, ColorList, ModalContent, OpenModalButton } from './styles'
@@ -12,8 +18,9 @@ export const Modal = () => {
     updateUserName,
     updateUserColor,
     updateTableColor,
+    updateCardsHighlight,
     updateCardSize,
-    interfaceSettings: { tableColor, cardSize },
+    interfaceSettings: { tableColor, cardSize, highlightCards },
   } = useGameContext()
   const [opened, { open, close }] = useDisclosure(false)
   const [username, setUsername] = useState(user.name)
@@ -30,6 +37,7 @@ export const Modal = () => {
     e.preventDefault()
     if (!username) return
     updateUserName(username)
+    close()
   }
 
   return (
@@ -107,6 +115,15 @@ export const Modal = () => {
               style={{ width: '30%' }}
             />
             <span>{cardSize.multiplier}</span>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+            <label htmlFor='highlightCards'>Destacar cartas colocáveis</label>
+            <Checkbox
+              id='highlightCards'
+              checked={highlightCards}
+              onChange={(e) => updateCardsHighlight(e.target.checked)}
+            />
           </div>
         </ModalContent>
       </MantineModal>
